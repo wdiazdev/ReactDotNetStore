@@ -1,16 +1,34 @@
+import { useEffect, useState } from "react"
 import Catalog from "../components/Catalog"
-import useGetProducts from "../hooks/useGetProducts"
+import { ProductsData } from "../models"
+// import useGetProducts from "../hooks/useGetProducts"
 
 function App() {
-  const { getProducts } = useGetProducts()
+  const [products, setProducts] = useState<ProductsData[]>([])
 
-  const { data: productsResponseData } = getProducts
+  useEffect(() => {
+    fetch("http://localhost:5000/api/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+  }, [])
 
-  const { data: productsData } = productsResponseData ?? {}
+  const addProduct = () => {
+    setProducts((prevState) => [
+      ...prevState,
+      {
+        id: prevState.length + 101,
+        name: "product" + (prevState.length + 1),
+        price: prevState.length * 100 + 100,
+        brand: "Test brand",
+        description: "Test description",
+        pictureUrl: "http//picsum.photos/200",
+      },
+    ])
+  }
 
   return (
     <div>
-      <Catalog products={productsData} />
+      <Catalog products={products} addProduct={addProduct} />
     </div>
   )
 }
