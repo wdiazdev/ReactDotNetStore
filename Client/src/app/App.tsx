@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import Catalog from "../components/Catalog"
-import { ProductsData } from "../models"
-// import useGetProducts from "../hooks/useGetProducts"
+import { Product } from "../models"
+import Typography from "@mui/material/Typography"
 
 function App() {
-  const [products, setProducts] = useState<ProductsData[]>([])
+  const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
     fetch("http://localhost:5000/api/products")
@@ -21,13 +21,14 @@ function App() {
         price: prevState.length * 100 + 100,
         brand: "Test brand",
         description: "Test description",
-        pictureUrl: "http//picsum.photos/200",
+        pictureUrl: "https://picsum.photos/200",
       },
     ])
   }
 
   return (
     <div>
+      <Typography variant="h1">Catalog</Typography>
       <Catalog products={products} addProduct={addProduct} />
     </div>
   )

@@ -1,26 +1,19 @@
-import { ProductsData } from "../models"
+import { Button } from "@mui/material"
+import { Product } from "../models"
+import ProductList from "./ProductList"
 
 type Props = {
-  products: ProductsData[]
+  products: Product[]
   addProduct: () => void
 }
 
 export default function Catalog({ products, addProduct }: Props) {
   return (
     <>
-      <h2>Catalog</h2>
-      <div>
-        {products && products.length > 0 && (
-          <ol>
-            {products.map((product: any) => (
-              <li key={product.id}>
-                <p>{product.name}</p>
-              </li>
-            ))}
-          </ol>
-        )}
-        <button onClick={addProduct}>Add</button>
-      </div>
+      <ProductList products={products} />
+      <Button variant="contained" onClick={addProduct}>
+        Add Product
+      </Button>
     </>
   )
 }
