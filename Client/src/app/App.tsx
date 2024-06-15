@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Catalog from "../components/Catalog"
-import { Product } from "../models"
-import Typography from "@mui/material/Typography"
+import Header from "../components/Header"
+import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material"
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [darkMode, setDarkMode] = useState(false)
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-  }, [])
+  const paletteType = darkMode ? "dark" : "light"
 
-  const addProduct = () => {
-    setProducts((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length + 101,
-        name: "product" + (prevState.length + 1),
-        price: prevState.length * 100 + 100,
-        brand: "Test brand",
-        description: "Test description",
-        pictureUrl: "https://picsum.photos/200",
+  const backgroundColor = darkMode ? "#121212" : "#eaeaea"
+
+  const theme = createTheme({
+    palette: {
+      mode: paletteType,
+      background: {
+        default: backgroundColor,
       },
-    ])
+    },
+  })
+
+  const handleDarkMode = () => {
+    setDarkMode(!darkMode)
   }
 
   return (
-    <div>
-      <Typography variant="h1">Catalog</Typography>
-      <Catalog products={products} addProduct={addProduct} />
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header handleDarkMode={handleDarkMode} darkMode={darkMode} />
+      <Container>
+        <Catalog />
+      </Container>
+    </ThemeProvider>
   )
 }
 
