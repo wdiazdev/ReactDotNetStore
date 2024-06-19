@@ -1,7 +1,23 @@
-import { Button, Container, Typography, ButtonGroup } from "@mui/material"
+import {
+  Button,
+  Container,
+  Typography,
+  ButtonGroup,
+  Alert,
+  AlertTitle,
+  List,
+  ListItem,
+} from "@mui/material"
 import agent from "../app/api/agent"
+import { useState } from "react"
 
 export default function About() {
+  const [validationsErrors, setValidationErrors] = useState<string[]>([])
+
+  const handleValidationError = () => {
+    agent.TestErrors.getValidationError().catch((err) => setValidationErrors(err))
+  }
+
   return (
     <Container>
       <Typography variant="h2">Errors Testing</Typography>
@@ -30,13 +46,21 @@ export default function About() {
         >
           Test 500 Error
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => agent.TestErrors.getValidationError().catch((err) => console.log(err))}
-        >
+        <Button variant="contained" onClick={handleValidationError}>
           Test Validation Error
         </Button>
       </ButtonGroup>
+      {validationsErrors.length > 0 && (
+        <Alert severity="error" sx={{ mt: 8 }}>
+          <AlertTitle>
+            <List>
+              {validationsErrors.map((err, index) => (
+                <ListItem key={index}>{err}</ListItem>
+              ))}
+            </List>
+          </AlertTitle>
+        </Alert>
+      )}
     </Container>
   )
 }
