@@ -8,7 +8,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material"
-import axios from "axios"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Product } from "../models"
@@ -18,13 +17,14 @@ export default function ProductDetails() {
   const { id } = useParams<{ id: string }>()
 
   const [product, setProduct] = useState<Product | null>(null)
+
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     id &&
       agent.Catalog.details(parseInt(id))
         .then((res) => setProduct(res))
-        .catch((err) => console.error(err))
+        .catch((err) => console.log("Error response: ", err))
         .finally(() => setLoading(false))
   }, [id])
 
