@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import App from "../App"
 import { About, Catalog, Contact, Home, ProductDetails } from "../../pages"
+import ServerError from "../api/errors/ServerError"
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "server-error",
+        element: <ServerError />,
       },
     ],
   },
