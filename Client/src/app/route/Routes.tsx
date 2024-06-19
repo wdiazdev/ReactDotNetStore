@@ -1,7 +1,8 @@
-import { createBrowserRouter } from "react-router-dom"
+import { Navigate, createBrowserRouter } from "react-router-dom"
 import App from "../App"
 import { About, Catalog, Contact, Home, ProductDetails } from "../../pages"
 import ServerError from "../api/errors/ServerError"
+import NotFound from "../api/errors/NotFound"
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: "server-error",
         element: <ServerError />,
+      },
+      {
+        path: "not-found",
+        element: <NotFound />,
+      },
+      {
+        path: "*",
+        element: <Navigate replace to="/not-found" />,
       },
     ],
   },

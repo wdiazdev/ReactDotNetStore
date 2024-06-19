@@ -12,26 +12,28 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Product } from "../models"
 import agent from "../app/api/agent"
+import NotFound from "../app/api/errors/NotFound"
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>()
 
   const [product, setProduct] = useState<Product | null>(null)
 
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     id &&
       agent.Catalog.details(parseInt(id))
         .then((res) => setProduct(res))
         .catch((err) => console.log("Error response: ", err))
-        .finally(() => setLoading(false))
+        .finally(() => setIsLoading(false))
   }, [id])
+
+  if (!isLoading && !product) return <NotFound />
 
   return (
     <>
-      {loading && <Typography variant="h2">Loading...</Typography>}
-      {!loading && !product && <Typography variant="h2">Product not found</Typography>}
+      {isLoading && <Typography variant="h2">Loading...</Typography>}
       {product && (
         <Grid container spacing={6}>
           <Grid item xs={6}>
