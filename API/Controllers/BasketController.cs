@@ -41,10 +41,10 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
-        {
-            return Ok();
-        }
+        // public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
+        // {
+        //     return Ok();
+        // }
 
         private async Task<Basket> RetrieveBasket()
         {
