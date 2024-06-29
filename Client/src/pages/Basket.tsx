@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material"
 import { Delete } from "@mui/icons-material"
+import { currencyFormat } from "../app/utils/utils"
 
 export default function Basket() {
   const [isLoading, setIsLoading] = useState(true)
@@ -44,9 +45,6 @@ export default function Basket() {
         </TableHead>
         <TableBody>
           {basket?.items.map((item) => {
-            const itemPrice = `$${(item.price / 100).toFixed(2)}`
-            const subTotal = `$${((item.price / 100) * item.quantity).toFixed(2)}`
-
             return (
               <TableRow
                 key={item.productId}
@@ -55,9 +53,9 @@ export default function Basket() {
                 <TableCell component="th" scope="item">
                   {item.name}
                 </TableCell>
-                <TableCell align="right">{itemPrice}</TableCell>
+                <TableCell align="right">{currencyFormat(item.price)}</TableCell>
                 <TableCell align="right">{item.quantity}</TableCell>
-                <TableCell align="right">{subTotal}</TableCell>
+                <TableCell align="right">{currencyFormat(item.price * item.quantity)}</TableCell>
                 <TableCell align="right">
                   <IconButton color="error">
                     <Delete />
