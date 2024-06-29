@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 type Props = {
   handleDarkMode: () => void
@@ -81,7 +81,14 @@ export default function Header({ handleDarkMode, darkMode }: Props) {
         </Box>
 
         <Box display="flex" alignItems="center">
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 1 }}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            sx={{ mr: 1 }}
+            component={Link}
+            to="/basket"
+          >
             <Badge badgeContent="4" color="secondary">
               <ShoppingCart />
             </Badge>
