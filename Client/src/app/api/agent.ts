@@ -6,6 +6,11 @@ const sleep = () => new Promise((resolve) => setTimeout(resolve, 500))
 
 axios.defaults.baseURL = "http://localhost:5000/api/"
 
+// Includes credentials in cross-origin requests by default.
+// This is useful for making authenticated API requests to a
+// server that is different from the one serving your web application.
+axios.defaults.withCredentials = true
+
 const responseBody = (response: AxiosResponse) => response.data
 
 axios.interceptors.response.use(
@@ -62,9 +67,18 @@ const TestErrors = {
   getValidationError: () => requests.get("buggy/validation-error"),
 }
 
+const Basket = {
+  getBasket: () => requests.get("basket"),
+  addItem: (productId: number, quantity = 1) =>
+    requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: number, quantity = 1) =>
+    requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
+}
+
 const agent = {
   Catalog,
   TestErrors,
+  Basket,
 }
 
 export default agent
