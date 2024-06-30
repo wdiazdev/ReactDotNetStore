@@ -1,7 +1,6 @@
 import {
   Box,
   Grid,
-  IconButton,
   Paper,
   Table,
   TableBody,

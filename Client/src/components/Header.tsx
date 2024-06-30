@@ -12,7 +12,6 @@ import {
 } from "@mui/material"
 import { Link, NavLink } from "react-router-dom"
 import { useStoreContext } from "../app/context/StoreContext"
-import { useReducer } from "react"
 
 type Props = {
   handleDarkMode: () => void
