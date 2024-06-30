@@ -2,8 +2,6 @@ import axios, { AxiosResponse } from "axios"
 import { toast } from "react-toastify"
 import { router } from "../route/Routes"
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 500))
-
 axios.defaults.baseURL = "http://localhost:5000/api/"
 
 // Includes credentials in cross-origin requests by default.
@@ -15,7 +13,6 @@ const responseBody = (response: AxiosResponse) => response.data
 
 axios.interceptors.response.use(
   async function (response) {
-    await sleep()
     return response
   },
   function (error) {
