@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import { useParams } from "react-router-dom"
 import { Product } from "../models"
 import agent from "../app/api/agent"
@@ -19,7 +19,7 @@ import { useStoreContext } from "../app/context/StoreContext"
 import { LoadingButton } from "@mui/lab"
 
 export default function ProductDetails() {
-  const { basket } = useStoreContext()
+  const { basket, setBasket, removeItem } = useStoreContext()
   const { id } = useParams<{ id: string }>()
 
   const [product, setProduct] = useState<Product | null>(null)
@@ -37,6 +37,38 @@ export default function ProductDetails() {
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false))
   }, [id, item])
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value) {
+      const value = Number(event.target.value)
+      if (value >= 0) setQuantity(value)
+    }
+  }
+
+  const handleUpdateItem = () => {
+    setSubmitting(true)
+    const productId = product?.id
+
+    if (!productId) {
+      console.log("Product ID is undefined or null")
+      setSubmitting(false)
+      return
+    }
+
+    if (!item || quantity > item.quantity) {
+      const updatedQuantity = item ? quantity - item.quantity : quantity
+      agent.Basket.addItem(productId, updatedQuantity)
+        .then((basket) => setBasket(basket))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false))
+    } else {
+      const updatedQuantity = item.quantity - quantity
+      agent.Basket.removeItem(productId, updatedQuantity)
+        .then(() => removeItem(productId, updatedQuantity))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false))
+    }
+  }
 
   if (isLoading) return <Loader message="Loading product..." />
 
@@ -90,6 +122,7 @@ export default function ProductDetails() {
                   label="Quantity in Cart"
                   fullWidth
                   value={quantity}
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -99,6 +132,9 @@ export default function ProductDetails() {
                   size="large"
                   variant="contained"
                   fullWidth
+                  onClick={handleUpdateItem}
+                  loading={submitting}
+                  disabled={item?.quantity === quantity || (!item && quantity === 0)}
                 >
                   {item ? "Update Quantity" : "Add to Cart"}
                 </LoadingButton>

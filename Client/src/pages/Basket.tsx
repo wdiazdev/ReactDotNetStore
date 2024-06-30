@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Grid,
   Paper,
   Table,
@@ -17,6 +18,7 @@ import { useState } from "react"
 import agent from "../app/api/agent"
 import { LoadingButton } from "@mui/lab"
 import BasketSummary from "../components/BasketSummary"
+import { Link } from "react-router-dom"
 
 export default function Basket() {
   const { basket, setBasket, removeItem } = useStoreContext()
@@ -113,6 +115,9 @@ export default function Basket() {
         <Grid item xs={6} />
         <Grid item xs={6}>
           <BasketSummary />
+          <Button component={Link} to="/checkout" variant="contained" size="large" fullWidth>
+            Checkout
+          </Button>
         </Grid>
       </Grid>
     </>

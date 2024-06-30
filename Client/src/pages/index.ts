@@ -4,5 +4,6 @@ import Contact from "./Contact"
 import Home from "./Home"
 import ProductDetails from "./ProductDetails"
 import Basket from "./Basket"
+import Checkout from "./Checkout"
 
-export { Home, About, Catalog, Contact, ProductDetails, Basket }
+export { Home, About, Catalog, Contact, ProductDetails, Basket, Checkout }
