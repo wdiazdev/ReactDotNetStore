@@ -8,9 +8,11 @@ import { useStoreContext } from "./context/StoreContext"
 import { getCookie } from "./utils/utils"
 import agent from "./api/agent"
 import Loader from "../components/Loader"
+import { useAppDispatch } from "./store/configureStore"
+import { setBasket } from "./store/basketSlice"
 
 function App() {
-  const { setBasket } = useStoreContext()
+  const dispatch = useAppDispatch()
   const [darkMode, setDarkMode] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -18,13 +20,13 @@ function App() {
     const buyerId = getCookie("buyerId")
     if (buyerId) {
       agent.Basket.getBasket()
-        .then((basket) => setBasket(basket))
+        .then((basket) => dispatch(setBasket(basket)))
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false))
     } else {
       setIsLoading(false)
     }
-  }, [setBasket])
+  }, [dispatch])
 
   const paletteType = darkMode ? "dark" : "light"
   const backgroundColor = darkMode ? "#121212" : "#eaeaea"

@@ -19,9 +19,11 @@ import agent from "../app/api/agent"
 import { LoadingButton } from "@mui/lab"
 import BasketSummary from "../components/BasketSummary"
 import { Link } from "react-router-dom"
+import { useAppSelector } from "../app/store/configureStore"
 
 export default function Basket() {
-  const { basket, setBasket, removeItem } = useStoreContext()
+  const { setBasket, removeItem } = useStoreContext()
+  const basket = useAppSelector((state) => state.basket)
   const [status, setStatus] = useState({
     loading: false,
     name: "",
@@ -59,7 +61,7 @@ export default function Basket() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {basket?.items.map((item) => {
+            {basket.basket?.items.map((item) => {
               return (
                 <TableRow
                   key={item.productId}
