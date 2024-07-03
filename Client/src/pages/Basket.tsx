@@ -13,17 +13,17 @@ import {
 } from "@mui/material"
 import { Add, Delete, Remove } from "@mui/icons-material"
 import { currencyFormat } from "../app/utils/utils"
-import { useStoreContext } from "../app/context/StoreContext"
 import { useState } from "react"
 import agent from "../app/api/agent"
 import { LoadingButton } from "@mui/lab"
 import BasketSummary from "../components/BasketSummary"
 import { Link } from "react-router-dom"
-import { useAppSelector } from "../app/store/configureStore"
+import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
+import { removeItem, setBasket } from "../app/store/basketSlice"
 
 export default function Basket() {
-  const { setBasket, removeItem } = useStoreContext()
-  const basket = useAppSelector((state) => state.basket)
+  const dispatch = useAppDispatch()
+  const { basket } = useAppSelector((state) => state.basket)
   const [status, setStatus] = useState({
     loading: false,
     name: "",
@@ -32,7 +32,7 @@ export default function Basket() {
   const handleAddItem = (productId: number, name: string) => {
     setStatus({ loading: true, name })
     agent.Basket.addItem(productId)
-      .then((basket) => setBasket(basket))
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setStatus({ loading: false, name: "" }))
   }
@@ -40,7 +40,7 @@ export default function Basket() {
   const handleRemoveItem = (productId: number, quantity = 1, name: string) => {
     setStatus({ loading: true, name })
     agent.Basket.removeItem(productId, quantity)
-      .then(() => removeItem(productId, quantity))
+      .then(() => dispatch(removeItem({ productId, quantity })))
       .catch((error) => console.log(error))
       .finally(() => setStatus({ loading: false, name: "" }))
   }
@@ -61,7 +61,7 @@ export default function Basket() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {basket.basket?.items.map((item) => {
+            {basket?.items.map((item) => {
               return (
                 <TableRow
                   key={item.productId}
