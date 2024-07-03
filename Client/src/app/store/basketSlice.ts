@@ -21,10 +21,8 @@ export const basketSlice = createSlice({
       const itemIndex = state.basket?.items.findIndex((i) => i.productId === productId)
       //itemIndex === undefined >>> index can be 0
       if (itemIndex === undefined || itemIndex === -1) return
-      if (state.basket) {
-        state.basket.items[itemIndex].quantity -= quantity
-        if (state.basket.items[itemIndex].quantity === 0) state.basket.items.splice(itemIndex, 1)
-      }
+      state.basket!.items[itemIndex].quantity -= quantity
+      if (state.basket?.items[itemIndex].quantity === 0) state.basket.items.splice(itemIndex, 1)
     },
   },
 })

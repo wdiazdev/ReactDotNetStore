@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material"
 import { Link, NavLink } from "react-router-dom"
-import { useStoreContext } from "../app/context/StoreContext"
+import { useAppSelector } from "../app/store/configureStore"
 
 type Props = {
   handleDarkMode: () => void
@@ -56,7 +56,7 @@ const navLinkStyles = {
 }
 
 export default function Header({ handleDarkMode, darkMode }: Props) {
-  const { basket } = useStoreContext()
+  const { basket } = useAppSelector((state) => state.basket)
 
   const itemCount = basket?.items.reduce((acc, item) => acc + item.quantity, 0)
 
