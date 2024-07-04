@@ -17,18 +17,17 @@ import NotFound from "../app/api/errors/NotFound"
 import Loader from "../components/Loader"
 import { LoadingButton } from "@mui/lab"
 import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
-import { removeItem, setBasket } from "../app/store/basketSlice"
+import { addBasketItemAsync, removeBasketItemAsync } from "../app/store/basketSlice"
 
 export default function ProductDetails() {
+  const { basket, status } = useAppSelector((state) => state.basket)
   const dispatch = useAppDispatch()
-  const { basket } = useAppSelector((state) => state.basket)
 
   const { id } = useParams<{ id: string }>()
 
   const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [quantity, setQuantity] = useState(0)
-  const [submitting, setSubmitting] = useState(false)
 
   const item = basket?.items.find((i) => i.productId === product?.id)
 
@@ -48,28 +47,18 @@ export default function ProductDetails() {
     }
   }
 
-  const handleUpdateItem = () => {
-    setSubmitting(true)
+  const handleUpdateCart = () => {
     const productId = product?.id
-
     if (!productId) {
       console.log("Product ID is undefined or null")
-      setSubmitting(false)
       return
     }
-
     if (!item || quantity > item.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity
-      agent.Basket.addItem(productId, updatedQuantity)
-        .then((basket) => dispatch(setBasket(basket)))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false))
+      dispatch(addBasketItemAsync({ productId, quantity: updatedQuantity }))
     } else {
       const updatedQuantity = item.quantity - quantity
-      agent.Basket.removeItem(productId, updatedQuantity)
-        .then(() => dispatch(removeItem({ productId: product.id, quantity: updatedQuantity })))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false))
+      dispatch(removeBasketItemAsync({ productId: product.id, quantity: updatedQuantity }))
     }
   }
 
@@ -135,8 +124,8 @@ export default function ProductDetails() {
                   size="large"
                   variant="contained"
                   fullWidth
-                  onClick={handleUpdateItem}
-                  loading={submitting}
+                  onClick={handleUpdateCart}
+                  loading={status === "pending" + product.id}
                   disabled={item?.quantity === quantity || (!item && quantity === 0)}
                 >
                   {item ? "Update Quantity" : "Add to Cart"}
