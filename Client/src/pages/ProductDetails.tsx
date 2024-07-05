@@ -11,34 +11,28 @@ import {
 } from "@mui/material"
 import { useState, useEffect, ChangeEvent } from "react"
 import { useParams } from "react-router-dom"
-import { Product } from "../models"
-import agent from "../app/api/agent"
 import NotFound from "../app/api/errors/NotFound"
 import Loader from "../components/Loader"
 import { LoadingButton } from "@mui/lab"
 import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
 import { addBasketItemAsync, removeBasketItemAsync } from "../app/store/basketSlice"
+import { fetchSingleProductAsync, productSelectors } from "../app/store/catalogSlice"
 
 export default function ProductDetails() {
-  const { basket, status } = useAppSelector((state) => state.basket)
+  const { id } = useParams<{ id: string }>()
+  const { basket, status: basketStatus } = useAppSelector((state) => state.basket)
+  const product = useAppSelector((state) => productSelectors.selectById(state, Number(id)))
+  const { status: productStatus } = useAppSelector((state) => state.catalog)
   const dispatch = useAppDispatch()
 
-  const { id } = useParams<{ id: string }>()
-
-  const [product, setProduct] = useState<Product | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [quantity, setQuantity] = useState(0)
 
   const item = basket?.items.find((i) => i.productId === product?.id)
 
   useEffect(() => {
     if (item) setQuantity(item.quantity)
-    id &&
-      agent.Catalog.details(parseInt(id))
-        .then((res) => setProduct(res))
-        .catch((error) => console.log(error))
-        .finally(() => setIsLoading(false))
-  }, [id, item])
+    if (!product && id) dispatch(fetchSingleProductAsync(parseInt(id)))
+  }, [id, item, product, dispatch])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value) {
@@ -62,9 +56,10 @@ export default function ProductDetails() {
     }
   }
 
-  if (isLoading) return <Loader message="Loading product..." />
+  if (basketStatus.includes("pending") || productStatus.includes("pending"))
+    return <Loader message="Loading product..." />
 
-  if (!isLoading && !product) return <NotFound />
+  if (!product) return <NotFound />
 
   return (
     <>
@@ -125,7 +120,7 @@ export default function ProductDetails() {
                   variant="contained"
                   fullWidth
                   onClick={handleUpdateCart}
-                  loading={status === "pending" + product.id}
+                  loading={basketStatus === "pending" + product.id}
                   disabled={item?.quantity === quantity || (!item && quantity === 0)}
                 >
                   {item ? "Update Quantity" : "Add to Cart"}
