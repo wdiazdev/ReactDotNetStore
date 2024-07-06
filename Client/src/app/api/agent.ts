@@ -52,7 +52,7 @@ const requests = {
 }
 
 const Catalog = {
-  list: () => requests.get("products"),
+  list: (orderBy?: string) => requests.get(`products?orderBy=${orderBy}`),
   details: (id: number) => requests.get(`products/${id}`),
 }
 
