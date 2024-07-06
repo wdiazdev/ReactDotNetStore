@@ -56,8 +56,7 @@ export default function ProductDetails() {
     }
   }
 
-  if (basketStatus.includes("pending") || productStatus.includes("pending"))
-    return <Loader message="Loading product..." />
+  if (productStatus.includes("pending")) return <Loader message="Loading product..." />
 
   if (!product) return <NotFound />
 
@@ -120,7 +119,7 @@ export default function ProductDetails() {
                   variant="contained"
                   fullWidth
                   onClick={handleUpdateCart}
-                  loading={basketStatus === "pending" + product.id}
+                  loading={basketStatus.includes("pending")}
                   disabled={item?.quantity === quantity || (!item && quantity === 0)}
                 >
                   {item ? "Update Quantity" : "Add to Cart"}
