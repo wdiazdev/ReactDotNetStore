@@ -54,6 +54,7 @@ const requests = {
 const Catalog = {
   list: (orderBy?: string) => requests.get(`products?orderBy=${orderBy}`),
   details: (id: number) => requests.get(`products/${id}`),
+  filters: () => requests.get("products/filters"),
 }
 
 const TestErrors = {
