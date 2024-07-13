@@ -24,3 +24,12 @@ export interface Basket {
   buyerId: string
   items: BasketItem[]
 }
+
+export interface ProductParams {
+  orderBy: string
+  SearchTerm?: string
+  brands?: string[]
+  types?: string[]
+  pageNumber: number
+  pageSize: number
+}
