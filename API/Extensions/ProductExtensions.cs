@@ -12,7 +12,7 @@ namespace API.Extensions
             {
                 "priceAsc" => query.OrderBy(p => p.Price),
                 "priceDesc" => query.OrderByDescending(p => p.Price),
-                _ => query.OrderBy(p => p.Name)
+                "name" => query.OrderBy(p => p.Name)
             };
 
             return query;

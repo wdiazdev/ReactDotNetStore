@@ -27,7 +27,7 @@ export interface Basket {
 
 export interface ProductParams {
   orderBy: string
-  SearchTerm?: string
+  searchTerm?: string
   brands?: string[]
   types?: string[]
   pageNumber: number

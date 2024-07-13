@@ -9,7 +9,6 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  TextField,
   Typography,
 } from "@mui/material"
 import { fetchFilters, fetchProductsAsync, productSelectors } from "../app/store/catalogSlice"
@@ -17,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
 import Loader from "../components/Loader"
 import ProductList from "../components/ProductList"
 import { useEffect } from "react"
+import ProductSearch from "../components/ProductSearch"
 
 const sortOptions = [
   { value: "name", label: "A-Z" },
@@ -45,7 +45,7 @@ export default function Catalog() {
     <Grid container spacing={4}>
       <Grid item xs={3}>
         <Paper sx={{ mb: 2 }}>
-          <TextField label="Search Products" variant="outlined" fullWidth />
+          <ProductSearch />
         </Paper>
 
         <Paper sx={{ mb: 2, p: 2 }}>
