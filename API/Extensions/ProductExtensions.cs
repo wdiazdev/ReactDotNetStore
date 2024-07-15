@@ -10,9 +10,10 @@ namespace API.Extensions
             
             query = orderBy switch
             {
+               
                 "priceAsc" => query.OrderBy(p => p.Price),
                 "priceDesc" => query.OrderByDescending(p => p.Price),
-                "name" => query.OrderBy(p => p.Name)
+                _ => query.OrderBy(p => p.Name) // Default case
             };
 
             return query;
