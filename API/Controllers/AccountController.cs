@@ -22,7 +22,9 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
 
-            if(user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            var checkPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if(user == null || !checkPassword)
                 return Unauthorized(); 
 
             return new UserDto

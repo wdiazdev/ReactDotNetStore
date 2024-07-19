@@ -1,6 +1,16 @@
 import { Navigate, createBrowserRouter } from "react-router-dom"
 import App from "../App"
-import { About, Catalog, Contact, Home, ProductDetails, Basket, Checkout } from "../../pages"
+import {
+  About,
+  Catalog,
+  Contact,
+  Home,
+  ProductDetails,
+  Basket,
+  Checkout,
+  Login,
+  Register,
+} from "../../pages"
 import ServerError from "../api/errors/ServerError"
 import NotFound from "../api/errors/NotFound"
 
@@ -44,6 +54,14 @@ export const router = createBrowserRouter([
       {
         path: "not-found",
         element: <NotFound />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
       },
       {
         path: "*",
