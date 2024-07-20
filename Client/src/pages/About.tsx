@@ -12,7 +12,7 @@ import agent from "../app/api/agent"
 import { useState } from "react"
 
 export default function About() {
-  const [validationsErrors, setValidationErrors] = useState<string[]>([])
+  const [validationErrors, setValidationErrors] = useState<string[]>([])
 
   const handleValidationError = () => {
     agent.TestErrors.getValidationError().catch((err) => setValidationErrors(err))
@@ -50,15 +50,14 @@ export default function About() {
           Test Validation Error
         </Button>
       </ButtonGroup>
-      {validationsErrors.length > 0 && (
+      {validationErrors.length > 0 && (
         <Alert severity="error" sx={{ mt: 8 }}>
-          <AlertTitle>
-            <List>
-              {validationsErrors.map((err, index) => (
-                <ListItem key={index}>{err}</ListItem>
-              ))}
-            </List>
-          </AlertTitle>
+          <AlertTitle>Validation Errors</AlertTitle>
+          <List>
+            {validationErrors.map((err, index) => (
+              <ListItem key={index}>{err}</ListItem>
+            ))}
+          </List>
         </Alert>
       )}
     </Container>

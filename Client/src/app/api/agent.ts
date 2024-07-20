@@ -29,31 +29,37 @@ axios.interceptors.response.use(
     return response
   },
   function (error) {
-    const { data, status } = error.response
-    switch (status) {
-      case 400:
-        if (data && data.errors) {
-          const modelStateErrors: string[] = []
-          for (const key in data.errors) {
-            modelStateErrors.push(data.errors[key])
+    if (error.response) {
+      const { data, status } = error.response
+      switch (status) {
+        case 400:
+          if (data && data.errors) {
+            const modelStateErrors: string[] = []
+            for (const key in data.errors) {
+              modelStateErrors.push(data.errors[key])
+            }
+            throw modelStateErrors.flat()
           }
-          throw modelStateErrors.flat()
-        }
-        toast.error(data.title)
-        break
-      case 401:
-        toast.error(data.title)
-        break
-      case 500:
-        router.navigate("/server-error", { state: { error: data } })
-        break
-      case 404:
-        router.navigate("/not-found")
-        break
-      default:
-        break
+          toast.error(data.title)
+          break
+        case 401:
+          toast.error(data.title)
+          break
+        case 500:
+          router.navigate("/server-error", { state: { error: data } })
+          break
+        case 404:
+          router.navigate("/not-found")
+          break
+        default:
+          break
+      }
+      return Promise.reject(error.response)
+    } else {
+      // Handle cases where error.response is undefined
+      toast.error("An unexpected error occurred")
+      return Promise.reject(error)
     }
-    return Promise.reject(error.response)
   },
 )
 
