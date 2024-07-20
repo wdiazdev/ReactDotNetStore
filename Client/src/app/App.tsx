@@ -4,20 +4,22 @@ import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/materia
 import { Outlet } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { useStoreContext } from "./context/StoreContext"
 import { getCookie } from "./utils/utils"
 import agent from "./api/agent"
 import Loader from "../components/Loader"
 import { useAppDispatch } from "./store/configureStore"
 import { setBasket } from "./store/basketSlice"
+import { fetchCurrentUser } from "./store/accountSlice"
 
 function App() {
   const dispatch = useAppDispatch()
+
   const [darkMode, setDarkMode] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const buyerId = getCookie("buyerId")
+    dispatch(fetchCurrentUser())
     if (buyerId) {
       agent.Basket.getBasket()
         .then((basket) => dispatch(setBasket(basket)))
