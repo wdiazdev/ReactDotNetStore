@@ -13,12 +13,22 @@ import {
 } from "../../pages"
 import ServerError from "../api/errors/ServerError"
 import NotFound from "../api/errors/NotFound"
+import RequiredAuth from "./RequiredAuth"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        element: <RequiredAuth />,
+        children: [
+          {
+            path: "checkout",
+            element: <Checkout />,
+          },
+        ],
+      },
       {
         path: "",
         element: <Home />,
@@ -42,10 +52,6 @@ export const router = createBrowserRouter([
       {
         path: "basket",
         element: <Basket />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
       },
       {
         path: "server-error",

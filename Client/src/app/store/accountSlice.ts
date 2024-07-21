@@ -69,7 +69,6 @@ export const accountSlice = createSlice({
     })
     builder.addCase(signInUser.fulfilled, (state, action) => {
       state.user = action.payload
-      router.navigate("/catalog")
     })
     builder.addCase(fetchCurrentUser.rejected, (state) => {
       state.user = null
