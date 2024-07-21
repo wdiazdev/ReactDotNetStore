@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import { toast } from "react-toastify"
 import { router } from "../route/Routes"
 import { PaginatedResponse } from "../../models/pagination"
@@ -28,9 +28,9 @@ axios.interceptors.response.use(
     }
     return response
   },
-  function (error) {
-    if (error.response) {
-      const { data, status } = error.response
+  function (error: AxiosError) {
+    if (error) {
+      const { data, status } = error.response as AxiosResponse
       switch (status) {
         case 400:
           if (data && data.errors) {
@@ -52,13 +52,10 @@ axios.interceptors.response.use(
           router.navigate("/not-found")
           break
         default:
+          toast.error("An unexpected error occurred")
           break
       }
       return Promise.reject(error.response)
-    } else {
-      // Handle cases where error.response is undefined
-      toast.error("An unexpected error occurred")
-      return Promise.reject(error)
     }
   },
 )

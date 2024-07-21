@@ -6,15 +6,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { Paper } from "@mui/material"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { FieldValues, useForm } from "react-hook-form"
 import { LoadingButton } from "@mui/lab"
 import { useAppDispatch } from "../app/store/configureStore"
 import { signInUser } from "../app/store/accountSlice"
 
 export default function Login() {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
@@ -25,7 +25,6 @@ export default function Login() {
 
   const submitForm = async (data: FieldValues) => {
     await dispatch(signInUser(data))
-    navigate("/catalog")
   }
 
   return (

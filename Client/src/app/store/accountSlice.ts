@@ -62,18 +62,19 @@ export const accountSlice = createSlice({
     builder.addCase(signInUser.rejected, (state, action) => {
       console.log("action:", action)
     })
+    builder.addCase(signInUser.fulfilled, (state, action) => {
+      state.user = action.payload
+      router.navigate("/catalog")
+    })
     builder.addCase(fetchCurrentUser.rejected, (state) => {
       state.user = null
       localStorage.removeItem("user")
       toast.error("Your session has expired. Please log in again to continue.")
       router.navigate("/login")
     })
-    builder.addMatcher(
-      isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled),
-      (state, action) => {
-        state.user = action.payload
-      },
-    )
+    builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
+      state.user = action.payload
+    })
   },
 })
 
