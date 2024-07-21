@@ -27,9 +27,9 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
 
-            var checkPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            var isValidPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            if (user == null || !checkPassword)
+            if (user == null || !isValidPassword)
                 return Unauthorized(); 
 
             var userBasket = await RetrieveBasket(loginDto.Username);
@@ -47,7 +47,7 @@ namespace API.Controllers
             {
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
-                Basket = anonymousBasket != null ? anonymousBasket.MapBasketToDto() : userBasket.MapBasketToDto()
+                Basket = anonymousBasket != null ? anonymousBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
             };
         }
 
@@ -82,10 +82,13 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
+            var userBasket = await RetrieveBasket(User.Identity.Name);
+
             return new UserDto
             {
                 Email = user.Email,
-                Token= await _tokenService.GenerateToken(user)
+                Token= await _tokenService.GenerateToken(user),
+                Basket = userBasket?.MapBasketToDto()
             };
         }
 

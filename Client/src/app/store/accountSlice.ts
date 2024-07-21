@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { User } from "../../models/user"
 import { FieldValues } from "react-hook-form"
 import agent from "../api/agent"
 import { router } from "../route/Routes"
 import { toast } from "react-toastify"
+import { setBasket } from "./basketSlice"
 
 interface AccountState {
   user: User | null
@@ -17,7 +18,9 @@ export const signInUser = createAsyncThunk<User, FieldValues>(
   "account/signInUser",
   async (data, thunkAPI) => {
     try {
-      const user = await agent.Account.login(data)
+      const userDto = await agent.Account.login(data)
+      const { basket, ...user } = userDto
+      if (basket) thunkAPI.dispatch(setBasket(basket))
       localStorage.setItem("user", JSON.stringify(user))
       return user
     } catch (error: any) {
@@ -31,7 +34,9 @@ export const fetchCurrentUser = createAsyncThunk<User>(
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem("user")!)))
     try {
-      const user = await agent.Account.currentUser()
+      const userDto = await agent.Account.currentUser()
+      const { basket, ...user } = userDto
+      if (basket) thunkAPI.dispatch(setBasket(basket))
       localStorage.setItem("user", JSON.stringify(user))
       return user
     } catch (error: any) {
@@ -60,7 +65,7 @@ export const accountSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(signInUser.rejected, (state, action) => {
-      console.log("action:", action)
+      console.log("action:", action.payload)
     })
     builder.addCase(signInUser.fulfilled, (state, action) => {
       state.user = action.payload

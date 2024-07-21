@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom"
 
 export default function ServerError() {
   const { state } = useLocation()
-  console.log("state:", state)
   return (
     <Container component={Paper}>
       {state?.error ? (

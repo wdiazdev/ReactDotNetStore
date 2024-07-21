@@ -4,6 +4,7 @@ import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
 import { signOut } from "../app/store/accountSlice"
+import { clearBasket } from "../app/store/basketSlice"
 
 export default function SignedInMenu() {
   const { user } = useAppSelector((state) => state.account)
@@ -25,7 +26,14 @@ export default function SignedInMenu() {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My orders</MenuItem>
-        <MenuItem onClick={() => dispatch(signOut())}>Logout</MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(signOut())
+            dispatch(clearBasket())
+          }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </>
   )
