@@ -27,8 +27,12 @@ export default function Login() {
 
   const submitForm = async (data: FieldValues) => {
     try {
-      await dispatch(signInUser(data))
-      navigate(location.state?.from || "/catalog")
+      const result = await dispatch(signInUser(data))
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate(location.state?.from || "/catalog")
+      } else {
+        console.log("Dispatch was not successful")
+      }
     } catch (error) {
       console.log("error:", error)
     }
