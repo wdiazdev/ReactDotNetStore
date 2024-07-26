@@ -73,14 +73,6 @@ const Catalog = {
   filters: () => requests.get("products/filters"),
 }
 
-const TestErrors = {
-  get400Error: () => requests.get("buggy/bad-request"),
-  get401Error: () => requests.get("buggy/unauthorised"),
-  get404Error: () => requests.get("buggy/not-found"),
-  get500Error: () => requests.get("buggy/server-error"),
-  getValidationError: () => requests.get("buggy/validation-error"),
-}
-
 const Basket = {
   getBasket: () => requests.get("basket"),
   addItem: (productId: number, quantity = 1) =>
@@ -95,11 +87,26 @@ const Account = {
   currentUser: () => requests.get("account/currentUser"),
 }
 
+const Orders = {
+  list: () => requests.get("orders"),
+  fetchOrder: (id: number) => requests.get(`orders/${id}`),
+  create: (values: any) => requests.post("orders", values),
+}
+
+const TestErrors = {
+  get400Error: () => requests.get("buggy/bad-request"),
+  get401Error: () => requests.get("buggy/unauthorised"),
+  get404Error: () => requests.get("buggy/not-found"),
+  get500Error: () => requests.get("buggy/server-error"),
+  getValidationError: () => requests.get("buggy/validation-error"),
+}
+
 const agent = {
   Catalog,
   TestErrors,
   Basket,
   Account,
+  Orders,
 }
 
 export default agent
