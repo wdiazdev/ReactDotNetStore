@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material"
 import { Link, NavLink } from "react-router-dom"
-import { useAppSelector } from "../app/store/configureStore"
+import { useAppSelector } from "../../app/store/configureStore"
 import SignedInMenu from "./SignedInMenu"
 
 type Props = {

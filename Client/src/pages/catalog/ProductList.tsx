@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material"
-import { Product } from "../models"
-import ProductCard from "./ProductCard"
-import { useAppSelector } from "../app/store/configureStore"
+import { Product } from "../../models"
+import { useAppSelector } from "../../app/store/configureStore"
 import ProductCardSkeleton from "./ProductCardSkeleton"
+import ProductCard from "./ProductCard"
 
 type Props = {
   products: Product[]

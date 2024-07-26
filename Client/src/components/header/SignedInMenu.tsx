@@ -2,9 +2,9 @@ import * as React from "react"
 import Button from "@mui/material/Button"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
-import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
-import { signOut } from "../app/store/accountSlice"
-import { clearBasket } from "../app/store/basketSlice"
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore"
+import { signOut } from "../../app/store/accountSlice"
+import { clearBasket } from "../../app/store/basketSlice"
 
 export default function SignedInMenu() {
   const { user } = useAppSelector((state) => state.account)

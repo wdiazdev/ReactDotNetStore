@@ -1,19 +1,19 @@
 import { Grid, Paper } from "@mui/material"
+import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore"
 import {
   fetchFilters,
   fetchProductsAsync,
   productSelectors,
   setPageNumber,
   setProductParams,
-} from "../app/store/catalogSlice"
-import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
-import Loader from "../components/Loader"
-import ProductList from "../components/ProductList"
-import { useEffect } from "react"
-import ProductSearch from "../components/ProductSearch"
-import RadioButtonGroup from "../components/RadioButtonGroup"
-import CheckboxButtons from "../components/CheckboxButtons"
-import AppPagination from "../components/AppPagination"
+} from "../../app/store/catalogSlice"
+import Loader from "../../components/Loader"
+import ProductSearch from "../../components/ProductSearch"
+import RadioButtonGroup from "../../components/RadioButtonGroup"
+import CheckboxButtons from "../../components/CheckboxButtons"
+import ProductList from "./ProductList"
+import AppPagination from "../../components/AppPagination"
 
 const sortOptions = [
   { value: "name", label: "A-Z" },

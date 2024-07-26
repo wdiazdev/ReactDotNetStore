@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react"
-import Header from "../components/Header"
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material"
 import { Outlet } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
@@ -8,6 +7,7 @@ import Loader from "../components/Loader"
 import { useAppDispatch } from "./store/configureStore"
 import { fetchBasketAsync } from "./store/basketSlice"
 import { fetchCurrentUser } from "./store/accountSlice"
+import Header from "../components/header/Header"
 
 function App() {
   const dispatch = useAppDispatch()

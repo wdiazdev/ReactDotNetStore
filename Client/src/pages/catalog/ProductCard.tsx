@@ -8,11 +8,11 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material"
-import { Product } from "../models"
 import { Link } from "react-router-dom"
 import { LoadingButton } from "@mui/lab"
-import { useAppDispatch, useAppSelector } from "../app/store/configureStore"
-import { addBasketItemAsync } from "../app/store/basketSlice"
+import { Product } from "../../models"
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore"
+import { addBasketItemAsync } from "../../app/store/basketSlice"
 
 type Props = {
   product: Product
