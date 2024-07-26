@@ -1,5 +1,5 @@
 import { Box, Button, Paper, Step, StepLabel, Stepper, Typography } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FieldValues, FormProvider, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AddressForm from "./AddressForm"
@@ -38,6 +38,14 @@ export default function CheckoutPage() {
     mode: "onTouched",
     resolver: yupResolver(currentValidationSchema),
   })
+
+  useEffect(() => {
+    agent.Account.fetchSavedAddress().then((response) => {
+      if (response) {
+        methods.reset({ ...methods.getValues(), ...response, savedAddress: false })
+      }
+    })
+  }, [methods])
 
   const handleNext = async (data: FieldValues) => {
     const { nameOnCard, saveAddress, ...shippingAddress } = data
