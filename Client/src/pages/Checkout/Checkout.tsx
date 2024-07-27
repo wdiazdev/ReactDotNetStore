@@ -27,10 +27,11 @@ function getStepContent(step: number) {
 }
 
 export default function CheckoutPage() {
+  const dispatch = useAppDispatch()
+
   const [activeStep, setActiveStep] = useState(0)
   const [orderNumber, setOrderNumber] = useState(0)
   const [loading, setLoading] = useState(false)
-  const dispatch = useAppDispatch()
 
   const currentValidationSchema = validationSchema[activeStep]
 

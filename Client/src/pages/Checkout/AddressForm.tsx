@@ -4,7 +4,7 @@ import AppTextInput from "../../components/AppTextInput"
 import AppCheckbox from "../../components/AppCheckbox"
 
 export default function AddressForm() {
-  const { control, formState } = useFormContext()
+  const { control } = useFormContext()
 
   return (
     <>
@@ -38,7 +38,6 @@ export default function AddressForm() {
             control={control}
             name="saveAddress"
             label="Save this as the default address"
-            disabled={!formState.isDirty}
           />
         </Grid>
       </Grid>
