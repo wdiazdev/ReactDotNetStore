@@ -14,6 +14,7 @@ import {
 import ServerError from "../api/errors/ServerError"
 import NotFound from "../api/errors/NotFound"
 import RequiredAuth from "./RequiredAuth"
+import Orders from "../../pages/orders/Orders"
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
           {
             path: "checkout",
             element: <Checkout />,
+          },
+          {
+            path: "orders",
+            element: <Orders />,
           },
         ],
       },

@@ -7,5 +7,6 @@ import Basket from "./basket/Basket"
 import Checkout from "./checkout/Checkout"
 import Login from "./Login"
 import Register from "./Register"
+import Order from "./orders/Orders"
 
-export { Home, About, Catalog, Contact, ProductDetails, Basket, Checkout, Login, Register }
+export { Home, About, Catalog, Contact, ProductDetails, Basket, Checkout, Login, Register, Order }

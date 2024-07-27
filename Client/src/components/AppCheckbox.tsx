@@ -7,7 +7,10 @@ interface Props extends UseControllerProps {
 }
 
 export default function AppCheckbox(props: Props) {
-  const { field } = useController({ ...props, defaultValue: false })
+  const { field } = useController({
+    ...props,
+    defaultValue: false,
+  })
 
   return (
     <FormControlLabel

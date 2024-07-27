@@ -2,11 +2,19 @@ import { TableContainer, Paper, Table, TableBody, TableRow, TableCell } from "@m
 import { currencyFormat } from "../app/utils/utils"
 import { useAppSelector } from "../app/store/configureStore"
 
-export default function BasketSummary() {
+interface Props {
+  orderDetailsSubtotal?: number
+}
+
+export default function BasketSummary({ orderDetailsSubtotal }: Props) {
   const { basket } = useAppSelector((state) => state.basket)
 
-  const subtotal = basket?.items.reduce((acc, item) => acc + item.quantity * item.price, 0) ?? 0
+  const subtotal = orderDetailsSubtotal
+    ? orderDetailsSubtotal
+    : basket?.items.reduce((acc, item) => acc + item.quantity * item.price, 0) ?? 0
+
   const deliveryFee = basket?.items.length === 0 ? 0 : subtotal > 10000 ? 0 : 500
+
   const total = subtotal + deliveryFee
 
   return (

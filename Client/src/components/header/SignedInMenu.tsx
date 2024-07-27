@@ -1,16 +1,20 @@
-import * as React from "react"
+import { useState } from "react"
 import Button from "@mui/material/Button"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore"
 import { signOut } from "../../app/store/accountSlice"
 import { clearBasket } from "../../app/store/basketSlice"
+import { Link } from "react-router-dom"
 
 export default function SignedInMenu() {
   const { user } = useAppSelector((state) => state.account)
   const dispatch = useAppDispatch()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -25,7 +29,9 @@ export default function SignedInMenu() {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My orders</MenuItem>
+        <MenuItem component={Link} to="/orders" onClick={handleClose}>
+          My orders
+        </MenuItem>
         <MenuItem
           onClick={() => {
             dispatch(signOut())

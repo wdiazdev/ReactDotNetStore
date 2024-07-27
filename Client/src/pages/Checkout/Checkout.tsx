@@ -40,11 +40,13 @@ export default function CheckoutPage() {
   })
 
   useEffect(() => {
-    agent.Account.fetchSavedAddress().then((response) => {
-      if (response) {
-        methods.reset({ ...methods.getValues(), ...response, savedAddress: false })
-      }
-    })
+    agent.Account.fetchSavedAddress()
+      .then((response) => {
+        if (response) {
+          methods.reset({ ...methods.getValues(), ...response, savedAddress: false })
+        }
+      })
+      .catch((error) => console.log(error))
   }, [methods])
 
   const handleNext = async (data: FieldValues) => {
