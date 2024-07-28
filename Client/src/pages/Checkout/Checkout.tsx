@@ -26,7 +26,7 @@ function getStepContent(step: number) {
   }
 }
 
-export default function CheckoutPage() {
+export default function Checkout() {
   const dispatch = useAppDispatch()
 
   const [activeStep, setActiveStep] = useState(0)

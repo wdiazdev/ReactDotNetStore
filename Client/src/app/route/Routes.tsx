@@ -1,20 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom"
 import App from "../App"
-import {
-  About,
-  Catalog,
-  Contact,
-  Home,
-  ProductDetails,
-  Basket,
-  Checkout,
-  Login,
-  Register,
-} from "../../pages"
+import { About, Catalog, Contact, Home, ProductDetails, Basket, Login, Register } from "../../pages"
 import ServerError from "../api/errors/ServerError"
 import NotFound from "../api/errors/NotFound"
 import RequiredAuth from "./RequiredAuth"
 import Orders from "../../pages/orders/Orders"
+import CheckoutWrapper from "../../pages/checkout/CheckoutWrapper"
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +17,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "checkout",
-            element: <Checkout />,
+            element: <CheckoutWrapper />,
           },
           {
             path: "orders",
