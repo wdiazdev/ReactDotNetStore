@@ -102,12 +102,17 @@ const TestErrors = {
   getValidationError: () => requests.get("buggy/validation-error"),
 }
 
+const Payments = {
+  createPaymentIntent: () => requests.post("/payments", {}),
+}
+
 const agent = {
   Catalog,
   TestErrors,
   Basket,
   Account,
   Orders,
+  Payments,
 }
 
 export default agent
