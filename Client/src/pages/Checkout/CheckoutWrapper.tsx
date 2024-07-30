@@ -7,15 +7,8 @@ const stripePromise = loadStripe(
 )
 
 export default function CheckoutWrapper() {
-  //   const options = {
-  //     clientSecret: "{{CLIENT_SECRET}}",
-  //   }
-
   return (
-    <Elements
-      stripe={stripePromise}
-      // options={options}
-    >
+    <Elements stripe={stripePromise}>
       <Checkout />
     </Elements>
   )
