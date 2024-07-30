@@ -3,9 +3,39 @@ import { useFormContext } from "react-hook-form"
 import AppTextInput from "../../components/AppTextInput"
 import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js"
 import { StripeInput } from "./StripeInput"
+import { useState } from "react"
+import { StripeElementType } from "@stripe/stripe-js"
+
+interface CardComplete {
+  cardNumber: boolean
+  cardExpiry: boolean
+  cardCvc: boolean
+}
 
 export default function PaymentForm() {
   const { control } = useFormContext()
+
+  const [cardState, setCardState] = useState<{
+    elementError: { [key in StripeElementType]?: string }
+  }>({ elementError: {} })
+
+  const [cardComplete, setCardComplete] = useState<CardComplete>({
+    cardNumber: false,
+    cardExpiry: false,
+    cardCvc: false,
+  })
+
+  const onCardInputChange = (event: any) => {
+    console.log("event:", event)
+    setCardState({
+      ...cardState,
+      elementError: {
+        ...cardState.elementError,
+        [event.elementType]: event.error?.message,
+      },
+    })
+    setCardComplete({ ...cardComplete, [event.elementType]: event.complete })
+  }
 
   return (
     <>
@@ -30,6 +60,9 @@ export default function PaymentForm() {
                 component: CardNumberElement,
               },
             }}
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardNumber}
+            helperText={cardState.elementError.cardNumber}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -46,13 +79,15 @@ export default function PaymentForm() {
                 component: CardExpiryElement,
               },
             }}
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardExpiry}
+            helperText={cardState.elementError.cardExpiry}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             id="cvv"
             label="CVV"
-            helperText="Last three digits on signature strip"
             fullWidth
             autoComplete="cc-csc"
             variant="outlined"
@@ -63,6 +98,9 @@ export default function PaymentForm() {
                 component: CardCvcElement,
               },
             }}
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardCvc}
+            helperText={cardState.elementError.cardCvc}
           />
         </Grid>
       </Grid>
