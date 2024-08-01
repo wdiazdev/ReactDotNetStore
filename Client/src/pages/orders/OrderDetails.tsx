@@ -18,7 +18,8 @@ export default function OrderDetails({ order, setSelectorOrder }: Props) {
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" sx={{ mb: 2, ml: 2 }}>
-          Order#{order.id} - {order.orderStatus}
+          Order#{order.id} -{" "}
+          {order.orderStatus === "PaymentReceived" ? "Payment received" : order.orderStatus}
         </Typography>
         <Button
           onClick={() => setSelectorOrder(0)}
