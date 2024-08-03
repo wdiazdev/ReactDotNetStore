@@ -90,6 +90,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors(opt =>
 {
     opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
@@ -97,7 +100,7 @@ app.UseCors(opt =>
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapFallbackToController("index", "Fallback");
 app.MapControllers();
 
 var scope = app.Services.CreateScope();
