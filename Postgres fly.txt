@@ -1,0 +1,7 @@
+  Username:    postgres
+  Password:    cQJLhvjDubCqy88
+  Hostname:    reactdotnetstoredb.internal
+  Flycast:     fdaa:9:b9f2:0:1::2
+  Proxy port:  5432
+  Postgres port:  5433
+  Connection string: postgres://postgres:cQJLhvjDubCqy88@reactdotnetstoredb.flycast:5432
