@@ -76,5 +76,22 @@ namespace API.Controllers
 
             return BadRequest(new ProblemDetails {Title = "Product creation failed"});
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        public async Task<ActionResult<Product>> UpdateProduct(UpdateProductDto productDto)
+        {
+            var product = await _context.Products.FindAsync(productDto.Id);
+
+            if (product == null) return NotFound();
+
+            _mapper.Map(productDto, product);
+
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (result) return NoContent();
+
+            return BadRequest(new ProblemDetails {Title = "Product update failed"});
+        }
     }
 }
