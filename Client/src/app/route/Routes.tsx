@@ -5,7 +5,6 @@ import NotFound from "../api/errors/NotFound"
 import RequiredAuth from "./RequiredAuth"
 import Orders from "../../pages/orders/Orders"
 import CheckoutWrapper from "../../pages/checkout/CheckoutWrapper"
-import Home from "../../pages/Home"
 import Catalog from "../../pages/catalog/Catalog"
 import ProductDetails from "../../pages/ProductDetails"
 import About from "../../pages/About"
@@ -13,6 +12,7 @@ import Contact from "../../pages/Contact"
 import Basket from "../../pages/basket/Basket"
 import Login from "../../pages/Login"
 import Register from "../../pages/Register"
+import Inventory from "../admin/Inventory"
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "orders",
             element: <Orders />,
+          },
+          {
+            path: "inventory",
+            element: <Inventory />,
           },
         ],
       },
