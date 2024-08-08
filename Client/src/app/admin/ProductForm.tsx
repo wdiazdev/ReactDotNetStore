@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form"
 import AppTextInput from "../../components/AppTextInput"
 import { Product } from "../../models"
 import { useEffect } from "react"
+import useProducts from "../hook/useProducts"
+import SelectList from "../../components/SelectList"
 
 interface Props {
   product?: Product
@@ -11,6 +13,7 @@ interface Props {
 
 export default function ProductForm({ product, cancelEdit }: Props) {
   const { control, reset } = useForm()
+  const { brands, types } = useProducts()
 
   useEffect(() => {
     if (product) reset(product)
@@ -26,10 +29,10 @@ export default function ProductForm({ product, cancelEdit }: Props) {
           <AppTextInput control={control} name="name" label="Product name" />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <AppTextInput control={control} name="brand" label="Brand" />
+          <SelectList control={control} name="brand" label="Brand" items={brands} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <AppTextInput control={control} name="type" label="Type" />
+          <SelectList control={control} name="type" label="Type" items={types} />
         </Grid>
         <Grid item xs={12} sm={6}>
           <AppTextInput control={control} name="price" label="Price" />
