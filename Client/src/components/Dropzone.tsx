@@ -7,21 +7,25 @@ import { useController, UseControllerProps } from "react-hook-form"
 interface Props extends UseControllerProps {}
 
 export default function Dropzone(props: Props) {
-  const { fieldState, field } = useController({ ...props, defaultValue: "" })
+  const { fieldState, field } = useController({ ...props, defaultValue: null })
 
   const dropzoneStyles = {
     display: "flex",
     alignItems: "center",
     height: 200,
     width: 500,
+    paddingTop: "30px",
     border: "dashed 3px #eee",
     borderColor: "#eee",
     borderRadius: "5px",
-    paddingTop: "30px",
   }
 
   const dropzoneActiveStyles = {
     borderColor: "green",
+  }
+
+  const dropzoneErrorStyles = {
+    borderColor: "red",
   }
 
   const onDrop = useCallback(
@@ -39,7 +43,14 @@ export default function Dropzone(props: Props) {
   return (
     <div {...getRootProps()}>
       <FormControl
-        style={isDragActive ? { ...dropzoneStyles, ...dropzoneActiveStyles } : dropzoneStyles}
+        style={
+          isDragActive
+            ? { ...dropzoneStyles, ...dropzoneActiveStyles }
+            : fieldState.error
+            ? { ...dropzoneStyles, ...dropzoneErrorStyles }
+            : dropzoneStyles
+        }
+        error={!!fieldState.error}
       >
         <input {...getInputProps()} />
         <UploadFile sx={{ fontSize: "100px" }} />
