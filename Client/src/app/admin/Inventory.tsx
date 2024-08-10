@@ -15,19 +15,24 @@ import { currencyFormat } from "../utils/utils"
 import useProducts from "../hook/useProducts"
 import AppPagination from "../../components/AppPagination"
 import { useAppDispatch, useAppSelector } from "../store/configureStore"
-import { setPageNumber } from "../store/catalogSlice"
+import { removeProduct, setPageNumber, setProduct } from "../store/catalogSlice"
 import Loader from "../../components/Loader"
 import { useState } from "react"
 import ProductForm from "./ProductForm"
 import { Product } from "../../models"
+import agent from "../api/agent"
+import { LoadingButton } from "@mui/lab"
 
 export default function Inventory() {
+  const dispatch = useAppDispatch()
+
   const [editMode, setEditMode] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [targetId, setTargetId] = useState(0)
+
   const { status } = useAppSelector((state) => state.catalog)
   const { products, metaData } = useProducts()
-
-  const dispatch = useAppDispatch()
 
   if (status === "pendingFetchProducts") return <Loader message="Loading products" />
 
@@ -39,6 +44,16 @@ export default function Inventory() {
   const handleCancelEdit = () => {
     if (selectedProduct) setSelectedProduct(undefined)
     setEditMode(false)
+  }
+
+  const handleDeleteProduct = async (id: number) => {
+    setIsLoading(true)
+    setTargetId(id)
+
+    await agent.Admin.deleteProduct(id)
+      .then(() => dispatch(removeProduct(id)))
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false))
   }
 
   if (editMode) return <ProductForm cancelEdit={handleCancelEdit} product={selectedProduct} />
@@ -88,7 +103,12 @@ export default function Inventory() {
                 <TableCell align="center">{product.quantityInStock}</TableCell>
                 <TableCell align="right">
                   <Button startIcon={<Edit />} onClick={() => handleSelectedProduct(product)} />
-                  <Button startIcon={<Delete />} color="error" />
+                  <LoadingButton
+                    onClick={() => handleDeleteProduct(product.id)}
+                    loading={isLoading && product.id === targetId}
+                    startIcon={<Delete />}
+                    color="error"
+                  />
                 </TableCell>
               </TableRow>
             ))}

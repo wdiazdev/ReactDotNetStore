@@ -3,6 +3,8 @@ import { toast } from "react-toastify"
 import { router } from "../route/Routes"
 import { PaginatedResponse } from "../../models/pagination"
 import { store } from "../store/configureStore"
+import { createFormData } from "../utils/utils"
+import { FieldValues } from "react-hook-form"
 
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 500))
 
@@ -68,6 +70,18 @@ const requests = {
   post: (url: string, body: object) => axios.post(url, body).then(responseBody),
   put: (url: string, body: object) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
+  postForm: (url: string, data: FormData) =>
+    axios
+      .post(url, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(responseBody),
+  putForm: (url: string, data: FormData) =>
+    axios
+      .put(url, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(responseBody),
 }
 
 const Catalog = {
@@ -97,16 +111,22 @@ const Orders = {
   create: (values: any) => requests.post("orders", values),
 }
 
+const Payments = {
+  createPaymentIntent: () => requests.post("/payments", {}),
+}
+
+const Admin = {
+  createProduct: (product: FieldValues) => requests.postForm("products", createFormData(product)),
+  updateProduct: (product: FieldValues) => requests.putForm("products", createFormData(product)),
+  deleteProduct: (productId: number) => requests.delete(`products/${productId}`),
+}
+
 const TestErrors = {
   get400Error: () => requests.get("buggy/bad-request"),
   get401Error: () => requests.get("buggy/unauthorised"),
   get404Error: () => requests.get("buggy/not-found"),
   get500Error: () => requests.get("buggy/server-error"),
   getValidationError: () => requests.get("buggy/validation-error"),
-}
-
-const Payments = {
-  createPaymentIntent: () => requests.post("/payments", {}),
 }
 
 const agent = {
@@ -116,6 +136,7 @@ const agent = {
   Account,
   Orders,
   Payments,
+  Admin,
 }
 
 export default agent

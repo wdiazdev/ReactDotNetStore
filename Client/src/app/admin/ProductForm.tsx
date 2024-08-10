@@ -8,6 +8,10 @@ import SelectList from "../../components/SelectList"
 import Dropzone from "../../components/Dropzone"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { validationSchema } from "./ProductFormValidation"
+import agent from "../api/agent"
+import { useAppDispatch } from "../store/configureStore"
+import { setProduct } from "../store/catalogSlice"
+import { LoadingButton } from "@mui/lab"
 
 interface Props {
   product?: Product
@@ -15,8 +19,17 @@ interface Props {
 }
 
 export default function ProductForm({ product, cancelEdit }: Props) {
+  const dispatch = useAppDispatch()
+
   const { brands, types } = useProducts()
-  const { control, reset, handleSubmit, watch } = useForm({
+
+  const {
+    control,
+    reset,
+    handleSubmit,
+    watch,
+    formState: { isDirty, isSubmitting },
+  } = useForm({
     mode: "onSubmit",
     resolver: yupResolver<any>(validationSchema),
   })
@@ -24,11 +37,25 @@ export default function ProductForm({ product, cancelEdit }: Props) {
   const watchFile = watch("file", null)
 
   useEffect(() => {
-    if (product) reset(product)
-  }, [product, reset])
+    if (product && !watchFile && !isDirty) reset(product)
+    return () => {
+      if (watchFile) URL.revokeObjectURL(watchFile.preview)
+    }
+  }, [product, reset, watchFile, isDirty])
 
-  const handleFormSubmit = (data: FieldValues) => {
-    console.log(data)
+  const handleFormSubmit = async (data: FieldValues) => {
+    try {
+      let response: Product
+      if (product) {
+        response = await agent.Admin.updateProduct(data)
+      } else {
+        response = await agent.Admin.createProduct(data)
+      }
+      dispatch(setProduct(response))
+      cancelEdit()
+    } catch (error) {
+      console.log("error:", error)
+    }
   }
 
   return (
@@ -82,9 +109,9 @@ export default function ProductForm({ product, cancelEdit }: Props) {
           <Button variant="contained" color="inherit" onClick={cancelEdit}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained" color="success">
+          <LoadingButton loading={isSubmitting} type="submit" variant="contained" color="success">
             Submit
-          </Button>
+          </LoadingButton>
         </Box>
       </form>
     </Box>
