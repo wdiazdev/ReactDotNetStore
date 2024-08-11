@@ -77,15 +77,18 @@ export default function Header({ handleDarkMode, darkMode }: Props) {
           <Switch size="small" onChange={handleDarkMode} checked={darkMode} sx={{ ml: 2 }} />
         </Box>
 
-        <Box>
-          <List sx={{ display: "flex" }}>
-            {midNavLinks.map(({ title, path }) => (
-              <ListItem key={path} component={NavLink} to={path} sx={navLinkStyles}>
-                {title.toLocaleUpperCase()}
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+        <List sx={{ display: "flex" }}>
+          {midNavLinks.map(({ title, path }) => (
+            <ListItem key={path} component={NavLink} to={path} sx={navLinkStyles}>
+              {title.toLocaleUpperCase()}
+            </ListItem>
+          ))}
+          {user && (
+            <ListItem component={NavLink} to={"/inventory"} sx={navLinkStyles}>
+              INVENTORY
+            </ListItem>
+          )}
+        </List>
 
         <Box display="flex" alignItems="center">
           <IconButton
