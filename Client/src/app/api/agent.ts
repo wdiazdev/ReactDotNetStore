@@ -53,6 +53,9 @@ axios.interceptors.response.use(
         case 500:
           router.navigate("/server-error", { state: { error: data } })
           break
+        case 403:
+          toast.error("Unauthorized, You do not have the necessary privileges to proceed. ")
+          break
         case 404:
           router.navigate("/not-found")
           break
