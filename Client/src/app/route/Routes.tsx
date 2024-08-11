@@ -19,6 +19,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      //authentication required routes
       {
         element: <RequiredAuth />,
         children: [
@@ -30,6 +31,12 @@ export const router = createBrowserRouter([
             path: "orders",
             element: <Orders />,
           },
+        ],
+      },
+      // admin required routes
+      {
+        element: <RequiredAuth roles={["Admin"]} />,
+        children: [
           {
             path: "inventory",
             element: <Inventory />,

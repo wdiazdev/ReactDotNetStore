@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit"
 import { User } from "../../models/user"
 import { FieldValues } from "react-hook-form"
 import agent from "../api/agent"
@@ -60,15 +60,14 @@ export const accountSlice = createSlice({
       router.navigate("/")
     },
     setUser: (state, action) => {
-      state.user = action.payload
+      const claims = JSON.parse(atob(action.payload.token.split(".")[1]))
+      const roles = claims["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      state.user = { ...action.payload, roles: typeof roles === "string" ? [roles] : roles }
     },
   },
   extraReducers: (builder) => {
     builder.addCase(signInUser.rejected, (state, action) => {
       console.log("action:", action.payload)
-    })
-    builder.addCase(signInUser.fulfilled, (state, action) => {
-      state.user = action.payload
     })
     builder.addCase(fetchCurrentUser.rejected, (state) => {
       state.user = null
@@ -76,9 +75,14 @@ export const accountSlice = createSlice({
       toast.error("Your session has expired. Please log in again to continue.")
       router.navigate("/login")
     })
-    builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
-      state.user = action.payload
-    })
+    builder.addMatcher(
+      isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled),
+      (state, action) => {
+        const claims = JSON.parse(atob(action.payload.token.split(".")[1]))
+        const roles = claims["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        state.user = { ...action.payload, roles: typeof roles === "string" ? [roles] : roles }
+      },
+    )
   },
 })
 

@@ -83,7 +83,7 @@ export default function Header({ handleDarkMode, darkMode }: Props) {
               {title.toLocaleUpperCase()}
             </ListItem>
           ))}
-          {user && (
+          {user && user.roles?.includes("Admin") && (
             <ListItem component={NavLink} to={"/inventory"} sx={navLinkStyles}>
               INVENTORY
             </ListItem>
